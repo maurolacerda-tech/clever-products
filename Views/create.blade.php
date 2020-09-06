@@ -27,17 +27,15 @@
 
 
 <div class="row clearfix">
-    <div class="card table-card"> 
-        <div class="card-body">
-            {{ Form::open(['url' => 'panel/'.$slug.'/store', 'files' => true ]) }}
-                @include('Service::_form')                        
-                <div class="col-sm-12 text-right">
-                    <a href="{{ route('admin.languages.index') }}" class="text-orange">Cancelar</a>
-                    <button type="submit" class="btn2 btn-dark ml-2">Criar</button>
-                </div>
-            {{ Form::close() }}
-
+    
+    {{ Form::open(['url' => 'panel/'.$slug.'/store', 'files' => true ]) }}
+        @include('Post::_form')                        
+        <div class="col-sm-12 text-right">
+            <a href="{{ url('/panel/'.$slug) }}" class="text-orange">Cancelar</a>
+            <button type="submit" class="btn2 btn-dark ml-2">Criar</button>
         </div>
-    </div>
+    {{ Form::close() }}
+
+        
 </div>
 @endsection

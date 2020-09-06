@@ -27,7 +27,6 @@
 
 
 <div class="row clearfix">
-    <div class="card table-card"> 
 
         <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
             <li class="nav-item">
@@ -45,37 +44,32 @@
         </ul>
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade active show" id="tab-pt-br" role="tabpanel" aria-labelledby="pills-timeline-tab">
-                <div class="card-body">
-                    {{ Form::model($service, ['url' => ['/panel/'.$slug, $service->id], 'method' => 'PUT', 'files' => true ]) }}
-                        @include('Service::_form')                        
-                        <div class="col-sm-12 text-right">
-                            <a href="{{ url('/panel/'.$slug) }}" class="text-orange">Cancelar</a>
-                            <button type="submit" class="btn2 btn-dark ml-2">Atualizar</button>
-                        </div>
-                    {{ Form::close() }}
-                </div>
+                {{ Form::model($post, ['url' => ['/panel/'.$slug, $post->id], 'method' => 'PUT', 'files' => true ]) }}
+                    @include('Post::_form')                        
+                    <div class="col-sm-12 text-right">
+                        <a href="{{ url('/panel/'.$slug) }}" class="text-orange">Cancelar</a>
+                        <button type="submit" class="btn2 btn-dark ml-2">Atualizar</button>
+                    </div>
+                {{ Form::close() }}
             </div>
             @foreach ($languages as $language)
             <div class="tab-pane fade" id="tab-{{$language->code}}" role="tabpanel" aria-labelledby="pills-timeline-tab">
-                <div class="card-body">
-                    @php
-                        $colectionTranslation = $language->translation($menu_id, $service->id);
-                    @endphp
-                    {{ Form::model($colectionTranslation, ['route' => ['admin.translations.store'], 'method' => 'POST']) }}
-                    <input type="hidden" name="menu_id" value="{{$menu_id}}">
-                    <input type="hidden" name="code" value="{{$language->code}}">
-                    <input type="hidden" name="parent_id" value="{{$service->id}}">
-                        @include('Service::_form_translate')                        
-                        <div class="col-sm-12 text-right">
-                            <a href="{{ url('/panel/'.$slug) }}" class="text-orange">Cancelar</a>
-                            <button type="submit" class="btn2 btn-dark ml-2">Atualizar</button>
-                        </div>
-                    {{ Form::close() }}
-                </div>
+                @php
+                    $colectionTranslation = $language->translation($menu_id, $post->id);
+                @endphp
+                {{ Form::model($colectionTranslation, ['route' => ['admin.translations.store'], 'method' => 'POST']) }}
+                <input type="hidden" name="menu_id" value="{{$menu_id}}">
+                <input type="hidden" name="code" value="{{$language->code}}">
+                <input type="hidden" name="parent_id" value="{{$post->id}}">
+                    @include('Post::_form_translate')                        
+                    <div class="col-sm-12 text-right">
+                        <a href="{{ url('/panel/'.$slug) }}" class="text-orange">Cancelar</a>
+                        <button type="submit" class="btn2 btn-dark ml-2">Atualizar</button>
+                    </div>
+                {{ Form::close() }}
             </div>
             @endforeach
         </div>
-        
-    </div>
+     
 </div>
 @endsection

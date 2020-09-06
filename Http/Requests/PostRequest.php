@@ -16,19 +16,18 @@ class ServiceRequest extends FormRequest
     {
         return [
             'name'  => 'required|max:191',
-            'slug' => "nullable",
-            'image' => "nullable|max:191",
-            'icon' => "nullable",
-            'summary' => "nullable", 
-            'status' => "nullable|in:active,inactive",
-            'featured' => "nullable|in:active,inactive",             
-            'order' => "nullable|numeric",            
+            'slug' => "required|max:191",
+            'date_publish' => "required|date",
+            'media' => "nullable|max:191",
+            'status' => "nullable|in:active,inactive", 
+            'format' => "nullable|in:image,video,audio",  
+            'user_id' => "nullable|numeric",         
+            'summary' => "nullable",
             'body' => "nullable",
             'seo_title' => "nullable",
             'meta_description' => "nullable",
             'meta_keywords' => "nullable",
-            'menu_id' => "required|numeric",
-            'parent_id' => "nullable|numeric"
+            'menu_id' => "required|numeric"
         ];
     }
 }

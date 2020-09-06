@@ -1,6 +1,6 @@
 {
-    "name": "maurolacerda-tech/clever-services",
-    "description": "Módulo de criação de serviços do CMS da cleverweb.com.br",
+    "name": "maurolacerda-tech/clever-posts",
+    "description": "Módulo de criação de posts do CMS da cleverweb.com.br",
     "authors": [
         {
             "name": "maurolacerda-tech",
@@ -8,17 +8,18 @@
         }
     ],
     "require": {
-
+        "maurolacerda-tech/clever-categories": "dev-master",
+        "maurolacerda-tech/clever-tags": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "Modules\\Services\\": "./"
+            "Modules\\Posts\\": "./"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Modules\\Services\\Providers\\ServiceServiceProvider"
+                "Modules\\Posts\\Providers\\PostServiceProvider"
             ]
         }
     }

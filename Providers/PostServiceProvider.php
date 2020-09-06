@@ -1,37 +1,37 @@
 <?php
 
-namespace Modules\Services\Providers;
+namespace Modules\Posts\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class ServiceServiceProvider extends ServiceProvider
+class PostServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        Route::namespace('Modules\Services\Http\Controllers')
+        Route::namespace('Modules\Posts\Http\Controllers')
             ->middleware(['web'])
             ->group(__DIR__. '/../Routes/web.php');
 
-            $this->loadViewsFrom(__DIR__.'/../Views', 'Service');
+            $this->loadViewsFrom(__DIR__.'/../Views', 'Post');
 
             $this->loadMigrationsFrom(__DIR__.'/../Migrations');
 
             $this->publishes([
-                __DIR__.'/../Views' => resource_path('views/vendor/Service'),
+                __DIR__.'/../Views' => resource_path('views/vendor/Post'),
             ], 'views');
 
             
             $this->publishes([
-                __DIR__.'/../Config/services.php' => config_path('services.php'),
+                __DIR__.'/../Config/posts.php' => config_path('posts.php'),
             ], 'config');
             
     }
     public function register()
     {        
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/services.php',
-            'services'
+            __DIR__.'/../Config/posts.php',
+            'posts'
         );
         
     }

@@ -40,61 +40,55 @@
                     <thead>
                         <tr>
                             <th>Título</th>
-                            @isset ($combine_filds['parent_id'])
-                                <th width="150">Filhos</th>
-                            @endisset
-                            <th width="100">Ordem</th>                            
-                            @isset ($combine_filds['featured'])
-                                <th width="100">{{$combine_filds['featured']}}</th>
-                            @endisset
+                            <th width="180">Data de Públicação</th>  
                             <th width="100">Status</th>
                             <th width="100">Ação</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse( $services as $service )
+                        @forelse( $posts as $post )
                         <tr>                            
-                            <td>{{$service->name}}</td>
-                            @isset ($combine_filds['parent_id'])
-                                <td>
-                                    <a href="{{ url('panel/'.$slug.'?parent='.$service->id) }}">
-                                        ({{$service->count_child}}) categorias filhos
-                                    </a>
-                                </td>
-                            @endisset
+                            <td>                                
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="/manager-setup/agencia/post-edit/id/1">
+                                            <img src="{{ url("storage/posts/".$post->user->image) }}" class="img-circle img-lg" alt="{{$post->user->name}}">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6 class="media-heading">
+                                            <a href="{{ url('panel/'.$slug.'/edit/'.$post->id)}}">
+                                                {{$post->name}}
+                                            </a>
+                                        </h6>
+                                        <span class="text-muted">Colunista: {{$post->user->name}}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{$post->date_publish_br}}</td>
                             <td>
-                                {{ Form::open(['url' => ['panel/'.$slug.'/'.$service->id.'/order'], 'method' => 'POST', 'id' => 'formorder'.$service->id ]) }}
-                                    {{Form::select('order', $orders, $service->order ,['class' => 'form-control fieldOrder fs-13'])}}
-                                {{ Form::close() }}    
-                            </td> 
-                            @isset ($combine_filds['featured']) 
-                            <td>
-                                <input type="checkbox" class="js-status" @if ($service->featured == 'active') checked @endif onchange="event.preventDefault();document.getElementById('form-featured{{$service->id}}').submit();"  />
-                            </td> 
-                            @endisset
-                            <td>
-                                <input type="checkbox" class="js-status" @if ($service->status == 'active') checked @endif onchange="event.preventDefault();document.getElementById('form-status{{$service->id}}').submit();"  />
+                                <input type="checkbox" class="js-status" @if ($post->status == 'active') checked @endif onchange="event.preventDefault();document.getElementById('form-status{{$post->id}}').submit();"  />
                             </td>                     
                             <td>
-                                <a href="{{ url('panel/'.$slug.'/edit/'.$service->id)}}" title="" data-toggle="tooltip" data-placement="top" data-original-title="editar" class="mr-2">
+                                <a href="{{ url('panel/'.$slug.'/edit/'.$post->id)}}" title="" data-toggle="tooltip" data-placement="top" data-original-title="editar" class="mr-2">
                                     <i class="ik ik-edit f-16 mr-15 text-green"></i>
                                 </a>
 
 
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#deleteModal{{$service->id}}" >
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#deleteModal{{$post->id}}" >
                                     <i class="ik ik-trash-2 f-16 text-red"></i>
                                 </a>
 
-                                <div class="modal fade" id="deleteModal{{$service->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModal{{$service->id}}Label" aria-hidden="true">
+                                <div class="modal fade" id="deleteModal{{$post->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModal{{$post->id}}Label" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
-                                        {{ Form::open(['url' => ['panel/'.$slug.'/'.$service->id], 'method' => 'DELETE', 'id' => 'form-delete'.$service->id ]) }}
+                                        {{ Form::open(['url' => ['panel/'.$slug.'/'.$post->id], 'method' => 'DELETE', 'id' => 'form-delete'.$post->id ]) }}
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalCenterLabel">Excluir</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             </div>
                                             <div class="modal-body">
-                                                Tem certeza que deseja excluir <i>"{{$service->name}}"</i>
+                                                Tem certeza que deseja excluir <i>"{{$post->name}}"</i>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn2 btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -105,11 +99,9 @@
                                     </div>
                                 </div>
 
+                             
                                 
-                                {{ Form::open(['url' => ['panel/'.$slug.'/'.$service->id.'/featured'], 'method' => 'POST', 'id' => 'form-featured'.$service->id ]) }}
-                                {{ Form::close() }}
-                                
-                                {{ Form::open(['url' => ['panel/'.$slug.'/'.$service->id.'/status'], 'method' => 'POST', 'id' => 'form-status'.$service->id ]) }}
+                                {{ Form::open(['url' => ['panel/'.$slug.'/'.$post->id.'/status'], 'method' => 'POST', 'id' => 'form-status'.$post->id ]) }}
                                 {{ Form::close() }}
                             </td>
                         </tr>
@@ -122,8 +114,8 @@
                         @endforelse 
                     </tbody>
                 </table>
-                @if($services instanceof \Illuminate\Pagination\LengthAwarePaginator )
-                    {{$services->links()}}
+                @if($posts instanceof \Illuminate\Pagination\LengthAwarePaginator )
+                    {{$posts->links()}}
                 @endif
             </div>
 
