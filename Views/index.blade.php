@@ -52,7 +52,7 @@
                                 <div class="media">
                                     <div class="media-left">
                                         <a href="/manager-setup/agencia/post-edit/id/1">
-                                            <img src="{{ url("storage/posts/".$post->user->image) }}" class="img-circle img-lg" alt="{{$post->user->name}}">
+                                            <img src="{{ url("storage/users/".$post->user->image) }}" class="img-circle img-lg" alt="{{$post->user->name}}">
                                         </a>
                                     </div>
                                     <div class="media-body">

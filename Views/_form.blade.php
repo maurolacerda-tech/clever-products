@@ -10,7 +10,7 @@
                     <div class="col-sm-12">
                         <div class="form-group">
                             {{ Form::label('media', 'Upload') }}
-                            <input type="file" name="media" class="dropify" @if(isset($post->image)) data-default-file="{{ url("storage/posts/".$post->image) }}"@endif data-height="150" data-max-file-size="12M" data-allowed-file-extensions="jpg png jpeg gif mp3 mp4 wmv"  />
+                            <input type="file" name="media" class="dropify" @if(isset($post->media)) data-default-file="{{ url("storage/posts/".$post->media) }}"@endif data-height="150" data-max-file-size="12M" data-allowed-file-extensions="jpg png jpeg gif mp3 mp4 wmv"  />
                         </div>
                     </div>
                 </div>            
@@ -96,9 +96,19 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
+                            {{ Form::label('date_publish', 'Data de Públicação') }}<span class="text-danger">*</span>
+                            {{ Form::date('date_publish', null,['class' => $errors->has('date_publish') ?  'form-control is-invalid' : 'form-control'])}}
+                            @include('admin.partials._help_block',['field' => 'date_publish'])
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
                             {{ Form::label('categories', 'Categorias') }}
                             {{
-                                Form::select('categories', $categories_list,null,['class' => $errors->has('categories') ?  'select2 form-control is-invalid' : 'select2 form-control', 'multiple' => 'multiple', 'name' => 'categories[]'])
+                                Form::select('categories', $categories_list,$categories_selected,['class' => $errors->has('categories') ?  'select2 form-control is-invalid' : 'select2 form-control', 'multiple' => 'multiple', 'name' => 'categories[]'])
                             }}
                             @include('admin.partials._help_block',['field' => 'categories'])
                         </div>
@@ -120,7 +130,7 @@
                         <div class="form-group">
                             {{ Form::label('tags', 'Tags') }}
                             {{
-                                Form::select('tags', $tags_list,null,['class' => $errors->has('tags') ?  'select2 form-control is-invalid' : 'select2 form-control', 'multiple' => 'multiple', 'name' => 'tags[]'])
+                                Form::select('tags', $tags_list,$tags_selected,['class' => $errors->has('tags') ?  'select2 form-control is-invalid' : 'select2 form-control', 'multiple' => 'multiple', 'name' => 'tags[]'])
                             }}
                             @include('admin.partials._help_block',['field' => 'tags'])
                         </div>

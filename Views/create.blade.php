@@ -39,3 +39,12 @@
         
 </div>
 @endsection
+
+@section('styles')
+<style>
+    .select2-container{
+        width: 100% !important;
+    }
+    form{width: 100%;}
+</style>
+@endsection

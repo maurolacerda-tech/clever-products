@@ -45,6 +45,7 @@
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade active show" id="tab-pt-br" role="tabpanel" aria-labelledby="pills-timeline-tab">
                 {{ Form::model($post, ['url' => ['/panel/'.$slug, $post->id], 'method' => 'PUT', 'files' => true ]) }}
+                    {{ Form::hidden('id', $post->id) }}
                     @include('Post::_form')                        
                     <div class="col-sm-12 text-right">
                         <a href="{{ url('/panel/'.$slug) }}" class="text-orange">Cancelar</a>
@@ -72,4 +73,13 @@
         </div>
      
 </div>
+@endsection
+
+@section('styles')
+<style>
+    .select2-container{
+        width: 100% !important;
+    }
+    form{width: 100%;}
+</style>
 @endsection

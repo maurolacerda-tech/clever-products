@@ -80,12 +80,26 @@ class PostsController extends Controller
 
         $option_void = ['' => 'Selecione' ];
         $categories = new Category;
-        $categories_list = $option_void+$categories->combo_all('',$menu_id);
-        $tags_list = Tag::where('menu_id', $menu_id)->orderBy('name', 'asc')->get()->pluck('name', 'id')->get();
+        $categories_list = $categories->combo_all('',$menu_id);
+        $tags_list = Tag::where('menu_id', $menu_id)->orderBy('name', 'asc')->get()->pluck('name', 'id')->all();
         $format_list = Post::FORMAT;
 
+        $categories_selected = null;
+        $tags_selected = null;
+        
         return view('Post::create', 
-            compact('menu_id', 'menu_icon', 'menu_name', 'slug', 'combine_filds', 'categories_list', 'tags_list', 'format_list')
+            compact(
+                'menu_id', 
+                'menu_icon', 
+                'menu_name', 
+                'slug', 
+                'combine_filds', 
+                'categories_list', 
+                'tags_list', 
+                'format_list',
+                'categories_selected',
+                'tags_selected'
+            )
         );
     }
 
@@ -99,8 +113,17 @@ class PostsController extends Controller
             $data['media'] = $this->_upload($request);
 
         $data['user_id'] = $user_id = auth()->user()->id;
+        $post = Post::create($data);
 
-        Post::create($data);
+        $categories = $request->categories;
+        if(is_array($categories)){
+            $post->categories()->attach($categories);
+        }
+        $tags = $request->tags;
+        if(is_array($tags)){
+            $post->tags()->attach($tags);
+        }
+
         return redirect()->back()->with('success','Adicionado com sucesso!');
     }
 
@@ -118,12 +141,28 @@ class PostsController extends Controller
 
         $option_void = ['' => 'Selecione' ];
         $categories = new Category;
-        $categories_list = $option_void+$categories->combo_all('',$menu_id);
-        $tags_list = Tag::where('menu_id', $menu_id)->orderBy('name', 'asc')->get()->pluck('name', 'id')->get();
+        $categories_list = $categories->combo_all('',$menu_id);
+        $tags_list = Tag::where('menu_id', $menu_id)->orderBy('name', 'asc')->get()->pluck('name', 'id')->all();
         $format_list = Post::FORMAT;
 
+        $categories_selected = $post->categories()->pluck('categories.id')->toArray();
+        $tags_selected = $post->tags()->pluck('tags.id')->toArray();
+
         return view('Post::edit', 
-            compact('post', 'languages', 'menu_id', 'menu_icon', 'menu_name', 'slug', 'combine_filds', 'categories_list', 'tags_list', 'format_list')
+            compact(
+                'post', 
+                'languages', 
+                'menu_id', 
+                'menu_icon', 
+                'menu_name', 
+                'slug', 
+                'combine_filds', 
+                'categories_list', 
+                'tags_list', 
+                'format_list',
+                'categories_selected',
+                'tags_selected'
+            )
         );
     }
 
@@ -135,8 +174,18 @@ class PostsController extends Controller
         $data = $request->only(array_keys($request->rules()));
         if(isset($request->media))
             $data['media'] = $this->_upload($request, $post->media);
+
         $post->fill($data);
         $post->save();
+
+        $categories = $request->categories;
+        if(is_array($categories)){
+            $post->categories()->sync($categories);
+        }
+        $tags = $request->tags;
+        if(is_array($tags)){
+            $post->tags()->sync($tags);
+        }
         return redirect()->back()->with('success','Atualizado com sucesso');
     }
 
@@ -173,7 +222,7 @@ class PostsController extends Controller
 
     protected function _upload(Request $request, $nameUpload = null)
     {
-        if(isset($request->image)){           
+        if(isset($request->media)){           
             $responseUpload = \Upload::genericPublic($request, 'media', $this->folder, $nameUpload);
             if($responseUpload->original['success']){
                 return $responseUpload->original['file'];
