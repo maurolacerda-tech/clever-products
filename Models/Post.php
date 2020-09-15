@@ -10,6 +10,7 @@ class Post extends Model
 
     const STATUS = [
         'active' => 'Ativo',
+        'moderate' => 'Requer Aprovação',
         'inactive' => 'Inativo'
     ];
 

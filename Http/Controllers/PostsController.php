@@ -7,11 +7,14 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Gate;
+use Auth;
 
 use App\Helpers\Functions;
 use App\Models\Menu;
 use App\Models\Language;
 use App\Models\Translation;
+use App\Models\Permission;
+
 use Modules\Posts\Models\Post;
 use Modules\Categories\Models\Category;
 use Modules\Tags\Models\Tag;
@@ -105,7 +108,7 @@ class PostsController extends Controller
 
     public function store(PostRequest $request)
     {
-        if( Gate::denies("manager_{$this->slug}") ) 
+        if(Gate::denies("manager_{$this->slug}") ) 
             abort(403, 'Você não tem permissão para gerenciar esta página');
 
         $data = $request->only(array_keys($request->rules()));
@@ -113,6 +116,14 @@ class PostsController extends Controller
             $data['media'] = $this->_upload($request);
 
         $data['user_id'] = $user_id = auth()->user()->id;
+
+        $permission = Permission::where('name','moderator')->first();
+        if(Auth::user()->hasPermission($permission)){
+            $data['status'] = 'active';
+        }else{
+            $data['status'] = 'moderate';
+        }
+
         $post = Post::create($data);
 
         $categories = $request->categories;
