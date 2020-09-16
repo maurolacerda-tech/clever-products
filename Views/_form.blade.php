@@ -96,6 +96,18 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
+                            {{ Form::label('status', 'Status') }}
+                            {{
+                                Form::select('status',$status_list,null,['class' => $errors->has('status') ?  'select2 form-control is-invalid' : 'select2 form-control'])
+                            }}
+                            @include('admin.partials._help_block',['field' => 'status'])
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
                             {{ Form::label('date_publish', 'Data de Públicação') }}<span class="text-danger">*</span>
                             {{ Form::date('date_publish', null,['class' => $errors->has('date_publish') ?  'form-control is-invalid' : 'form-control'])}}
                             @include('admin.partials._help_block',['field' => 'date_publish'])

@@ -67,7 +67,11 @@
                             </td>
                             <td>{{$post->date_publish_br}}</td>
                             <td>
-                                <input type="checkbox" class="js-status" @if ($post->status == 'active') checked @endif onchange="event.preventDefault();document.getElementById('form-status{{$post->id}}').submit();"  />
+                                @if ($post->status=='moderate')
+                                    <span class="badge badge-danger mb-1">Requer moderação</span>
+                                @else
+                                    <input type="checkbox" class="js-status" @if ($post->status == 'active') checked @endif onchange="event.preventDefault();document.getElementById('form-status{{$post->id}}').submit();"  />
+                                @endif                                
                             </td>                     
                             <td>
                                 <a href="{{ url('panel/'.$slug.'/edit/'.$post->id)}}" title="" data-toggle="tooltip" data-placement="top" data-original-title="editar" class="mr-2">

@@ -12,6 +12,7 @@ use Auth;
 use App\Helpers\Functions;
 use App\Models\Menu;
 use App\Models\Language;
+use App\Models\Notification;
 use App\Models\Translation;
 use App\Models\Permission;
 
@@ -86,6 +87,7 @@ class PostsController extends Controller
         $categories_list = $categories->combo_all('',$menu_id);
         $tags_list = Tag::where('menu_id', $menu_id)->orderBy('name', 'asc')->get()->pluck('name', 'id')->all();
         $format_list = Post::FORMAT;
+        $status_list = Post::STATUS;
 
         $categories_selected = null;
         $tags_selected = null;
@@ -101,7 +103,8 @@ class PostsController extends Controller
                 'tags_list', 
                 'format_list',
                 'categories_selected',
-                'tags_selected'
+                'tags_selected',
+                'status_list'
             )
         );
     }
@@ -135,6 +138,10 @@ class PostsController extends Controller
             $post->tags()->attach($tags);
         }
 
+        if($post->status == 'moderate'){
+            Notification::create(['name' => 'Um post requer moderação', 'description' => '<p> Um novo post foi adicionado e requer moderção, por favor acesse a pagina de posts para aprovar ou rejeitar a públicação. </p>', 'type' => 'info' ]);
+        }
+
         return redirect()->back()->with('success','Adicionado com sucesso!');
     }
 
@@ -155,6 +162,7 @@ class PostsController extends Controller
         $categories_list = $categories->combo_all('',$menu_id);
         $tags_list = Tag::where('menu_id', $menu_id)->orderBy('name', 'asc')->get()->pluck('name', 'id')->all();
         $format_list = Post::FORMAT;
+        $status_list = Post::STATUS;
 
         $categories_selected = $post->categories()->pluck('categories.id')->toArray();
         $tags_selected = $post->tags()->pluck('tags.id')->toArray();
@@ -172,7 +180,8 @@ class PostsController extends Controller
                 'tags_list', 
                 'format_list',
                 'categories_selected',
-                'tags_selected'
+                'tags_selected',
+                'status_list'
             )
         );
     }
