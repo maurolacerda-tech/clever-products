@@ -1,6 +1,6 @@
 {
-    "name": "maurolacerda-tech/clever-posts",
-    "description": "Módulo de criação de posts do CMS da cleverweb.com.br",
+    "name": "maurolacerda-tech/clever-products",
+    "description": "Módulo de criação de produtos do CMS da cleverweb.com.br",
     "authors": [
         {
             "name": "maurolacerda-tech",
@@ -9,17 +9,17 @@
     ],
     "require": {
         "maurolacerda-tech/clever-categories": "dev-master",
-        "maurolacerda-tech/clever-tags": "dev-master"
+        "maurolacerda-tech/clever-brands": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "Modules\\Posts\\": "./"
+            "Modules\\Products\\": "./"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Modules\\Posts\\Providers\\PostServiceProvider"
+                "Modules\\Products\\Providers\\ProductServiceProvider"
             ]
         }
     }

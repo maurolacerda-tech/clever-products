@@ -29,7 +29,7 @@
 <div class="row clearfix">
     
     {{ Form::open(['url' => 'panel/'.$slug.'/store', 'files' => true ]) }}
-        @include('Post::_form')                        
+        @include('Product::_form')                        
         <div class="col-sm-12 text-right">
             <a href="{{ url('/panel/'.$slug) }}" class="text-orange">Cancelar</a>
             <button type="submit" class="btn2 btn-dark ml-2">Criar</button>
@@ -47,4 +47,14 @@
     }
     form{width: 100%;}
 </style>
+@endsection
+
+@section('scriptjs')
+    @isset ($combine_filds['more_images'])
+        <script>
+            $(document).ready(function() {
+                carregaMultiplasImages();
+            });
+        </script>
+    @endisset
 @endsection

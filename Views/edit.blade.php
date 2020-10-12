@@ -44,9 +44,9 @@
         </ul>
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade active show" id="tab-pt-br" role="tabpanel" aria-labelledby="pills-timeline-tab">
-                {{ Form::model($post, ['url' => ['/panel/'.$slug, $post->id], 'method' => 'PUT', 'files' => true ]) }}
-                    {{ Form::hidden('id', $post->id) }}
-                    @include('Post::_form')                        
+                {{ Form::model($product, ['url' => ['/panel/'.$slug, $product->id], 'method' => 'PUT', 'files' => true ]) }}
+                    {{ Form::hidden('id', $product->id) }}
+                    @include('Product::_form')                        
                     <div class="col-sm-12 text-right">
                         <a href="{{ url('/panel/'.$slug) }}" class="text-orange">Cancelar</a>
                         <button type="submit" class="btn2 btn-dark ml-2">Atualizar</button>
@@ -56,13 +56,13 @@
             @foreach ($languages as $language)
             <div class="tab-pane fade" id="tab-{{$language->code}}" role="tabpanel" aria-labelledby="pills-timeline-tab">
                 @php
-                    $colectionTranslation = $language->translation($menu_id, $post->id);
+                    $colectionTranslation = $language->translation($menu_id, $product->id);
                 @endphp
                 {{ Form::model($colectionTranslation, ['route' => ['admin.translations.store'], 'method' => 'POST']) }}
                 <input type="hidden" name="menu_id" value="{{$menu_id}}">
                 <input type="hidden" name="code" value="{{$language->code}}">
-                <input type="hidden" name="parent_id" value="{{$post->id}}">
-                    @include('Post::_form_translate')                        
+                <input type="hidden" name="parent_id" value="{{$product->id}}">
+                    @include('Product::_form_translate')                        
                     <div class="col-sm-12 text-right">
                         <a href="{{ url('/panel/'.$slug) }}" class="text-orange">Cancelar</a>
                         <button type="submit" class="btn2 btn-dark ml-2">Atualizar</button>
@@ -82,4 +82,18 @@
     }
     form{width: 100%;}
 </style>
+@endsection
+
+
+@section('scriptjs')
+    @isset ($combine_filds['more_images'])
+        @php
+            $more_images_json = isset($product->more_images_json) ? $product->more_images_json : '';
+        @endphp
+        <script>
+            $(document).ready(function() {
+                carregaMultiplasImages( {!! $more_images_json !!} );
+            });
+        </script>
+    @endisset
 @endsection

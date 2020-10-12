@@ -39,60 +39,58 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Título</th>
-                            <th width="180">Data de Públicação</th>  
+                            <th width="40">#</th> 
+                            <th>Título</th>                             
                             <th width="100">Status</th>
                             <th width="100">Ação</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse( $posts as $post )
-                        <tr>                            
+                        @forelse( $products as $product )
+                        <tr>
+                            <td>{{$product->id}}</td>
                             <td>                                
                                 <div class="media">
+                                    @if (!is_null($product->media))
                                     <div class="media-left">
-                                        <a href="/manager-setup/agencia/post-edit/id/1">
-                                            <img src="{{ url("storage/users/".$post->user->image) }}" class="img-circle img-lg" alt="{{$post->user->name}}">
+                                        <a href="{{ url('panel/'.$slug.'/edit/'.$product->id)}}">
+                                            <img src="{{ url("storage/products/".$product->media) }}" class="img-circle img-lg" alt="{{$product->name}}">
                                         </a>
                                     </div>
+                                    @endif
+
                                     <div class="media-body">
                                         <h6 class="media-heading">
-                                            <a href="{{ url('panel/'.$slug.'/edit/'.$post->id)}}">
-                                                {{$post->name}}
+                                            <a href="{{ url('panel/'.$slug.'/edit/'.$product->id)}}">
+                                                {{$product->name}}
                                             </a>
                                         </h6>
-                                        <span class="text-muted">Colunista: {{$post->user->name}}</span>
                                     </div>
                                 </div>
-                            </td>
-                            <td>{{$post->date_publish_br}}</td>
-                            <td>
-                                @if ($post->status=='moderate')
-                                    <span class="badge badge-danger mb-1">Requer moderação</span>
-                                @else
-                                    <input type="checkbox" class="js-status" @if ($post->status == 'active') checked @endif onchange="event.preventDefault();document.getElementById('form-status{{$post->id}}').submit();"  />
-                                @endif                                
+                            </td>                            
+                            <td>                              
+                                <input type="checkbox" class="js-status" @if ($product->status == 'active') checked @endif onchange="event.preventDefault();document.getElementById('form-status{{$product->id}}').submit();"  />                                                              
                             </td>                     
                             <td>
-                                <a href="{{ url('panel/'.$slug.'/edit/'.$post->id)}}" title="" data-toggle="tooltip" data-placement="top" data-original-title="editar" class="mr-2">
+                                <a href="{{ url('panel/'.$slug.'/edit/'.$product->id)}}" title="" data-toggle="tooltip" data-placement="top" data-original-title="editar" class="mr-2">
                                     <i class="ik ik-edit f-16 mr-15 text-green"></i>
                                 </a>
 
 
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#deleteModal{{$post->id}}" >
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#deleteModal{{$product->id}}" >
                                     <i class="ik ik-trash-2 f-16 text-red"></i>
                                 </a>
 
-                                <div class="modal fade" id="deleteModal{{$post->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModal{{$post->id}}Label" aria-hidden="true">
+                                <div class="modal fade" id="deleteModal{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModal{{$product->id}}Label" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
-                                        {{ Form::open(['url' => ['panel/'.$slug.'/'.$post->id], 'method' => 'DELETE', 'id' => 'form-delete'.$post->id ]) }}
+                                        {{ Form::open(['url' => ['panel/'.$slug.'/'.$product->id], 'method' => 'DELETE', 'id' => 'form-delete'.$product->id ]) }}
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalCenterLabel">Excluir</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             </div>
                                             <div class="modal-body">
-                                                Tem certeza que deseja excluir <i>"{{$post->name}}"</i>
+                                                Tem certeza que deseja excluir <i>"{{$product->name}}"</i>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn2 btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -105,7 +103,7 @@
 
                              
                                 
-                                {{ Form::open(['url' => ['panel/'.$slug.'/'.$post->id.'/status'], 'method' => 'POST', 'id' => 'form-status'.$post->id ]) }}
+                                {{ Form::open(['url' => ['panel/'.$slug.'/'.$product->id.'/status'], 'method' => 'POST', 'id' => 'form-status'.$product->id ]) }}
                                 {{ Form::close() }}
                             </td>
                         </tr>
@@ -118,8 +116,8 @@
                         @endforelse 
                     </tbody>
                 </table>
-                @if($posts instanceof \Illuminate\Pagination\LengthAwarePaginator )
-                    {{$posts->links()}}
+                @if($products instanceof \Illuminate\Pagination\LengthAwarePaginator )
+                    {{$products->links()}}
                 @endif
             </div>
 
